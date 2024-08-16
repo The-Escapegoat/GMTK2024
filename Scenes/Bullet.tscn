@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://cdegykb1krad5"]
+
+[ext_resource type="Texture2D" uid="uid://7jwic405rxmm" path="res://Tileset.png" id="1_imj6c"]
+[ext_resource type="Script" path="res://Scenes/bullet.gd" id="1_uvf5p"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bxhal"]
+atlas = ExtResource("1_imj6c")
+region = Rect2(0, 72, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mmdyk"]
+atlas = ExtResource("1_imj6c")
+region = Rect2(8, 72, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xo3tc"]
+atlas = ExtResource("1_imj6c")
+region = Rect2(16, 72, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_msp4n"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bxhal")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mmdyk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xo3tc")
+}],
+"loop": true,
+"name": &"shooting",
+"speed": 12.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_56xbn"]
+radius = 5.0
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+collision_layer = 4
+script = ExtResource("1_uvf5p")
+speed = 10000
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_msp4n")
+animation = &"shooting"
+frame_progress = 0.580833
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_56xbn")
