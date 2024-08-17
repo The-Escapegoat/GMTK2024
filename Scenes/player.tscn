@@ -274,7 +274,7 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_awfcc"]
 size = Vector2(6, 11)
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("side_point", "up_point", "up_side_point", "down_side_point", "down_point")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("side_point", "up_point", "up_side_point", "down_side_point", "down_point") groups=["Player"]]
 collision_layer = 2
 script = ExtResource("1_yvhtc")
 side_point = NodePath("Shootpoint3")
@@ -307,6 +307,10 @@ one_shot = true
 wait_time = 0.5
 one_shot = true
 
+[node name="MomentumTimer" type="Timer" parent="."]
+wait_time = 1.2
+one_shot = true
+
 [node name="JumpBuffer" type="Timer" parent="."]
 wait_time = 0.2
 one_shot = true
@@ -330,5 +334,6 @@ position = Vector2(5, 7)
 [node name="Shootpoint5" type="Marker2D" parent="."]
 position = Vector2(-1, 8)
 
+[connection signal="timeout" from="MomentumTimer" to="." method="_on_momentum_timer_timeout"]
 [connection signal="timeout" from="JumpBuffer" to="." method="_on_jump_buffer_timeout"]
 [connection signal="timeout" from="ShootBuffer" to="." method="_on_shoot_buffer_timeout"]
