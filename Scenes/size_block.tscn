@@ -1,7 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://b6qej6pnlrb73"]
+[gd_scene load_steps=12 format=3 uid="uid://b6qej6pnlrb73"]
 
 [ext_resource type="Script" path="res://Scenes/size_block.gd" id="1_qrpys"]
 [ext_resource type="Texture2D" uid="uid://7jwic405rxmm" path="res://Tileset.png" id="2_jscwm"]
+[ext_resource type="AudioStream" uid="uid://dskqe5owaasbo" path="res://Grow.wav" id="3_2qp3e"]
+[ext_resource type="AudioStream" uid="uid://cwe5smkhfd65" path="res://Shrink.wav" id="4_st2x2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7dcqu"]
 size = Vector2(8, 8)
@@ -79,5 +81,10 @@ shape = SubResource("RectangleShape2D_7dcqu")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_y4o7w")
-animation = &"2"
-frame_progress = 0.926062
+animation = &"1"
+
+[node name="Grow" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_2qp3e")
+
+[node name="Shrink" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_st2x2")

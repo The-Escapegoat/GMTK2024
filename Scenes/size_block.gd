@@ -11,6 +11,8 @@ func _ready():
 	anim.play(str(currentSize))
 	col.scale = Vector2(currentSize, currentSize)
 func Grow():
+	$Grow.pitch_scale = randf_range(1.0, 1.4)
+	$Grow.play()
 	player = get_tree().get_nodes_in_group("Player")[0]
 	direction = global_position.direction_to(player.global_position)
 	direction.x = roundi(direction.x)
@@ -24,9 +26,11 @@ func Grow():
 		currentSize += 1
 		anim.play(str(currentSize))
 		col.scale = Vector2(currentSize, currentSize)
-		player.momentum = direction * Vector2(launchAmount, launchAmount)
+
 		
 func Shrink():
+	$Shrink.pitch_scale = randf_range(1.0, 1.4)
+	$Shrink.play()
 	player = get_tree().get_nodes_in_group("Player")[0]
 	direction = global_position.direction_to(player.global_position)
 	direction.x = roundi(direction.x)
@@ -40,4 +44,3 @@ func Shrink():
 		currentSize -= 1
 		anim.play(str(currentSize))
 		col.scale = Vector2(currentSize, currentSize)
-		player.momentum = -direction * Vector2(launchAmount, launchAmount)

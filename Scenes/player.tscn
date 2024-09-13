@@ -1,8 +1,11 @@
-[gd_scene load_steps=35 format=3 uid="uid://x2xmnqrvc64h"]
+[gd_scene load_steps=38 format=3 uid="uid://x2xmnqrvc64h"]
 
 [ext_resource type="Texture2D" uid="uid://c3c40bixgl87f" path="res://Player.png" id="1_s88q5"]
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_yvhtc"]
 [ext_resource type="PackedScene" uid="uid://cdegykb1krad5" path="res://Scenes/Bullet.tscn" id="2_7v6x8"]
+[ext_resource type="AudioStream" uid="uid://cn5y6rc1xs42o" path="res://TheSkylands.wav" id="4_cgaq7"]
+[ext_resource type="AudioStream" uid="uid://oscqlruk84cc" path="res://Shoot.wav" id="5_3fi8r"]
+[ext_resource type="AudioStream" uid="uid://hvl7s4blgl65" path="res://Jump.wav" id="6_120n6"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_460sn"]
 atlas = ExtResource("1_s88q5")
@@ -285,11 +288,13 @@ down_point = NodePath("Shootpoint5")
 bullet = ExtResource("2_7v6x8")
 
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
+z_index = 2
 sprite_frames = SubResource("SpriteFrames_jtp7r")
 animation = &"air"
 frame_progress = 0.40879
 
 [node name="GunSprite" type="AnimatedSprite2D" parent="."]
+z_index = 2
 sprite_frames = SubResource("SpriteFrames_a5t0f")
 animation = &"shootdownright"
 frame = 2
@@ -305,10 +310,6 @@ one_shot = true
 
 [node name="Cooldown" type="Timer" parent="."]
 wait_time = 0.5
-one_shot = true
-
-[node name="MomentumTimer" type="Timer" parent="."]
-wait_time = 1.2
 one_shot = true
 
 [node name="JumpBuffer" type="Timer" parent="."]
@@ -334,6 +335,18 @@ position = Vector2(5, 7)
 [node name="Shootpoint5" type="Marker2D" parent="."]
 position = Vector2(-1, 8)
 
-[connection signal="timeout" from="MomentumTimer" to="." method="_on_momentum_timer_timeout"]
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+current = true
+
+[node name="Music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_cgaq7")
+autoplay = true
+
+[node name="Shoot" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_3fi8r")
+
+[node name="Jump" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_120n6")
+
 [connection signal="timeout" from="JumpBuffer" to="." method="_on_jump_buffer_timeout"]
 [connection signal="timeout" from="ShootBuffer" to="." method="_on_shoot_buffer_timeout"]

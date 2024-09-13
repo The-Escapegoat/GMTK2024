@@ -1,0 +1,91 @@
+[gd_scene load_steps=12 format=3 uid="uid://db0camalr14xk"]
+
+[ext_resource type="Script" path="res://Scenes/size_block.gd" id="1_ay845"]
+[ext_resource type="Texture2D" uid="uid://7jwic405rxmm" path="res://Tileset.png" id="2_lbpjv"]
+[ext_resource type="AudioStream" uid="uid://dskqe5owaasbo" path="res://Grow.wav" id="3_hojwp"]
+[ext_resource type="AudioStream" uid="uid://cwe5smkhfd65" path="res://Shrink.wav" id="4_iv5a8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7dcqu"]
+size = Vector2(8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6dhxu"]
+atlas = ExtResource("2_lbpjv")
+region = Rect2(32, 56, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ppe7k"]
+atlas = ExtResource("2_lbpjv")
+region = Rect2(16, 56, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_igigi"]
+atlas = ExtResource("2_lbpjv")
+region = Rect2(16, 32, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qcuse"]
+atlas = ExtResource("2_lbpjv")
+region = Rect2(40, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oj8oc"]
+atlas = ExtResource("2_lbpjv")
+region = Rect2(32, 64, 40, 40)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_y4o7w"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6dhxu")
+}],
+"loop": true,
+"name": &"1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ppe7k")
+}],
+"loop": true,
+"name": &"2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_igigi")
+}],
+"loop": true,
+"name": &"3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qcuse")
+}],
+"loop": true,
+"name": &"4",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oj8oc")
+}],
+"loop": true,
+"name": &"5",
+"speed": 5.0
+}]
+
+[node name="SizeBlock" type="StaticBody2D" groups=["resizable"]]
+collision_mask = 5
+script = ExtResource("1_ay845")
+currentSize = 3
+launchAmount = 120
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_7dcqu")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_y4o7w")
+animation = &"3"
+
+[node name="Grow" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_hojwp")
+
+[node name="Shrink" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_iv5a8")

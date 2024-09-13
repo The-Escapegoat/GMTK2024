@@ -6,7 +6,7 @@ extends CharacterBody2D
 const SPEED = 100.0
 const ACCELERATION = 1400.0
 const FRICTION = 1500.0
-const JUMP_VELOCITY = -310.0
+const JUMP_VELOCITY = -250.0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -21,14 +21,14 @@ var facing_direction : int = 1
 @export var down_side_point : Marker2D
 @export var down_point : Marker2D
 @export var bullet : PackedScene
-var momentum : Vector2
+
 
 var gunDirName : String
 
 var selected_point : Marker2D
 
 var shoot_direction : Vector2
-
+var current_checkpoint : Vector2
 var is_shooting : bool
 
 var can_move : bool = true
@@ -38,7 +38,7 @@ var can_shoot : bool = true
 @onready var gun_sprite = $GunSprite
 @onready var coyotye_jump_timer = $CoyoteJumpTimer
 @onready var cooldown = $Cooldown
-@onready var momentumCooldown = $MomentumTimer
+
 
 @onready var jump_buffer_timer = $JumpBuffer
 @onready var shoot_buffer_timer = $ShootBuffer
@@ -81,6 +81,8 @@ func _physics_process(delta):
 		
 func shoot():
 	can_shoot = false
+	$Shoot.pitch_scale = randf_range(1.0, 1.4)
+	$Shoot.play()
 	cooldown.start()
 	is_shooting = true
 	var b = bullet.instantiate()
@@ -122,25 +124,23 @@ func apply_gravity(delta):
 		velocity.y += gravity * delta
 		
 func handle_jump():
-	
+	if(Input.is_key_pressed(KEY_R)):
+		death()
 	if(Input.is_action_just_pressed("Jump") and !is_on_floor()):
 		jump_buffered = true
 		jump_buffer_timer.start()
 	if is_on_floor() or coyotye_jump_timer.time_left > 0.0:		
 		if Input.is_action_just_pressed("Jump") or jump_buffered:
 			jump_buffered = false
+			$Jump.pitch_scale = randf_range(1.0, 1.4)
+			$Jump.play()
 			velocity.y = JUMP_VELOCITY
-			if(momentumCooldown.time_left > 0):
-				velocity += momentum
-				momentum = Vector2.ZERO
-			momentumCooldown.start()
 	if not is_on_floor():
 		if Input.is_action_just_released("Jump") and velocity.y < JUMP_VELOCITY/2 and !is_shooting:
 			velocity.y = JUMP_VELOCITY/2
 			
 func apply_friction(input_axis, delta):
 	if input_axis == 0:
-		print(velocity.x)
 		velocity.x = move_toward(velocity.x, 0, FRICTION * delta) 
 		
 func handle_acceleration(input_axis, delta):
@@ -173,5 +173,6 @@ func _on_shoot_buffer_timeout():
 func _on_jump_buffer_timeout():
 	jump_buffered = false
 	
-func _on_momentum_timer_timeout() -> void:
-	momentum = Vector2.ZERO
+func death():
+	velocity = Vector2.ZERO
+	self.global_position = current_checkpoint
